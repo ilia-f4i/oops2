@@ -1,40 +1,32 @@
 public class Radio {
     private int currentStation;
     private int currentVolume;
+    private final int stationsCount;
 
     public Radio() {
-        this.currentStation = 0;
-        this.currentVolume = 0;
+        this(10); // По умолчанию 10 станций
     }
 
-    public int getCurrentStation() {
-        return currentStation;
-    }
-
-    public void setCurrentStation(int currentStation) {
-        if (currentStation >= 0 && currentStation <= 9) {
-            this.currentStation = currentStation;
+    public Radio(int stationsCount) {
+        if (stationsCount <= 0) {
+            throw new IllegalArgumentException("Количество станций должно быть положительным");
         }
+        this.stationsCount = stationsCount;
     }
 
-    public void nextStation() {
-        if (currentStation == 9) {
-            currentStation = 0;
-        } else {
-            currentStation++;
+    public void next() {
+        currentStation = (currentStation == stationsCount - 1) ? 0 : currentStation + 1;
+    }
+
+    public void prev() {
+        currentStation = (currentStation == 0) ? stationsCount - 1 : currentStation - 1;
+    }
+
+    public void setCurrentStation(int station) {
+        if (station < 0 || station >= stationsCount) {
+            throw new IllegalArgumentException("Неверный номер станции. Должен быть от 0 до " + (stationsCount - 1));
         }
-    }
-
-    public void prevStation() {
-        if (currentStation == 0) {
-            currentStation = 9;
-        } else {
-            currentStation--;
-        }
-    }
-
-    public int getCurrentVolume() {
-        return currentVolume;
+        this.currentStation = station;
     }
 
     public void increaseVolume() {
@@ -49,11 +41,16 @@ public class Radio {
         }
     }
 
-    public void setCurrentVolume(int currentVolume) {
-        if (currentVolume >= 0 && currentVolume <= 100) {
-            this.currentVolume = currentVolume;
-        }
+    // Геттеры
+    public int getCurrentStation() {
+        return currentStation;
     }
 
+    public int getCurrentVolume() {
+        return currentVolume;
+    }
 
+    public int getStationsCount() {
+        return stationsCount;
+    }
 }
